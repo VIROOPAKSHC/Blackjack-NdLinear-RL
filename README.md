@@ -7,8 +7,7 @@ The Hit and Stand buttons are for playing the game manually. The MC, TD, and QL 
 
 On the screen it shows the values and number of visits corresponding to the current state of the game. Note that the learning is happening in the background and it is not related to the state that you see in the screen. When you manually play with the Hit and Stand buttons, you are just manually sampling various states of the game and can see how their current values are (they keep changing when you are running the learning algorithms). 
 
-The AutoPlay button at the end will automatically play the game with the learned Q values. When you haven't implemented Q learning, its default action is always HIT. Take a look at the winning rate to see how your Q-learning improves the decisions and that is an indicator of whether your Q-learning is correct (when it is working, the winning rate should be around 41%). 
-
+The AutoPlay button at the end will automatically play the game with the learned Q values. 
 ### Code for Monte Carlo Policy Evaluation 
 
 Evaluates the policy "Hit (ask for a new card) if sum of cards is below 14, and Stand (switch to dealer) otherwise" using the Monte Carlo method. Namely, learns the values for each state under the policy. 
