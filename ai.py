@@ -14,16 +14,36 @@ class NN(nn.Module):
     def __init__(self):
     	super().__init__()
     	self.input = nn.Linear(4,3)
-    	self.layer1 = NdLinear(input_dims=(1,),hidden_size=(2,),transform_outer=False) # nn.Linear(6,6)
+    	self.layer1 = nn.Linear(3,6)
     	self.output = nn.Linear(6,1)
+    def forward(self,x):
+        x = self.input(x)
+        x = self.layer1(x)
+        x = self.output(x)
+
+        return x
+
+class NND(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.input = nn.Linear(4,2)
+        self.layer1 = NdLinear(input_dims=(1,),hidden_size=(2,),transform_outer=False) # nn.Linear(6,6)
+        self.output = nn.Linear(4,1)
     def forward(self,x):
         x = self.input(x)
         x = x.reshape(-1,1)
         x = self.layer1(x)
-        x = x.reshape(6,)
+        x = x.reshape(4,)
         x = self.output(x)
 
         return x
+
+model = NND()
+# print(dir(model))
+print("NDLinear Parameters :",sum(p.numel() for p in model.parameters()))
+model2 = NN()
+print("NN Parameters :",sum(p.numel() for p in model2.parameters()))
+
 
 class Agent:
     def __init__(self):
@@ -139,7 +159,6 @@ class Agent:
                 self.tester_print(simulation, num_simulation, "Q")
 
             self.simulator.reset()
-            model = NN()
             while not self.simulator.game_over():
                 state = self.simulator.state
                 action = self.pick_action(state,epsilon)
@@ -148,7 +167,7 @@ class Agent:
                 self.N_Q[state][action]+=1
                 new_state = self.simulator.state
                 reward = self.simulator.check_reward()
-                loss = reward+DISCOUNT*np.max(torch.tensor(self.Q_values[new_state]).detach().numpy())-model(torch.from_numpy(np.array([*state,action],dtype=np.float32)))
+                loss = reward+DISCOUNT*np.max(torch.tensor(self.Q_values[new_state]).detach().numpy())- model(torch.from_numpy(np.array([*state,action],dtype=np.float32))) #self.Q_values[state][action]#
                 loss.backward()
                 self.Q_values[state][action] = self.Q_values[state][action] + self.alpha(self.N_Q[state][action])*(loss)
 
