@@ -26,9 +26,9 @@ class NN(nn.Module):
 class NND(nn.Module):
     def __init__(self):
         super().__init__()
-        self.input = nn.Linear(4,2)
+        self.input = nn.Linear(4,3)
         self.layer1 = NdLinear(input_dims=(1,),hidden_size=(2,),transform_outer=False) # nn.Linear(6,6)
-        self.output = nn.Linear(4,1)
+        self.output = nn.Linear(6,1)
     def forward(self,x):
         x = self.input(x)
         x = x.reshape(-1,1)
