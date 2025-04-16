@@ -33,7 +33,7 @@ class NND(nn.Module):
         x = self.input(x)
         x = x.reshape(-1,1)
         x = self.layer1(x)
-        x = x.reshape(4,)
+        x = x.reshape(6,)
         x = self.output(x)
 
         return x
